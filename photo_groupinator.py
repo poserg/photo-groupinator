@@ -1,4 +1,7 @@
+#!/usr/bin/env python
+
 from flask import Flask, request
+
 app = Flask(__name__)
 app.debug = True
 
@@ -12,6 +15,10 @@ def photo(photo_id):
 		return 'Photo %d' % photo_id
 	elif request.method == 'PUT':
 		return 'Change photo %d' % photo_id
+
+@app.route('/group/<int:group_id>', methods=['GET', 'PUT'])
+def group(group_id):
+	pass
 
 if __name__ == '__main__':
 	app.run()
