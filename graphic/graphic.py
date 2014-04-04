@@ -56,5 +56,5 @@ def convert_image(additional_params):
         print "Error with coverting file: " + additional_params[-2]
     
 
-def find_duplicate(path):
+#def find_duplicate(path):
     
