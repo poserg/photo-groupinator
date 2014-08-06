@@ -51,17 +51,18 @@ def blur_image(image_path):
     convert_image(params)
     
 def convert_image(additional_params):
+    print ("Start convert image")
     params =["convert",
              "-quality",
              "90"
              ]
     params += additional_params
-    
+    print (params)
     retcode = call(params)
     
     if retcode != 0:
         print "Error with coverting file: " + additional_params[-2]
-    
+    print ("Image converted")
 
 #def find_duplicate(path):
     
