@@ -1,14 +1,19 @@
 # -*- coding: utf-8 -*-
 
-from PIL import Image
+# from PIL import Image
 from subprocess import call
+import os
 
 MAIN_IMAGE = ("main", "1600x1067")
 THUMBS_IMAGE = ("thumbs", "168x112")
 BLUR_IMAGE = ("blur")
 
 def get_dir(path):
-    os.makedirs(path, exist_ok = True)
+    #os.makedirs(path, exist_ok = True)
+    try:
+      os.makedirs(path)
+    except OSError, e:
+      print "Directory is exists"
     # d = os.path.dirname(path)
     # if not os.path.exists(d):
     #     os.makedirs(d)
@@ -39,8 +44,10 @@ def blur_image(image_path):
               "Mirror",
               "-gaussian-blur",
               "0x8",
-              "-scale"
-              "252x336"]
+              "-scale",
+              "252x336",
+              image_path,
+              "blur" + "/" + os.path.basename(image_path)]
     convert_image(params)
     
 def convert_image(additional_params):
@@ -52,7 +59,7 @@ def convert_image(additional_params):
     
     retcode = call(params)
     
-    if recode != 0:
+    if retcode != 0:
         print "Error with coverting file: " + additional_params[-2]
     
 
