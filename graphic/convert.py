@@ -20,14 +20,22 @@ def get_dir(path):
         
     # return d
 
+def get_dir(path, file_name):
+  if len(path) > 0 and path[-1] == "/":
+    return get_dir(path + file_name)
+  else:
+    return get_dir(path + "/" + file_name)
 
-def resize_image(image_path, t):
+
+def resize_image(image_path, dist_path, t):
     """Generate main image
     convert -quality 90 -resize 1600x1067 IMG_1203.JPG my_out.jpg
     
     Thumbs
     convert -quality 90 -resize 168x112 IMG_1203.JPG my_out.jpg"""
-    get_dir(t[0])
+
+
+    get_dir(dist_path, t[0])
     params = [
         "-resize",
         t[1],
@@ -39,7 +47,7 @@ def resize_image(image_path, t):
 def blur_image(image_path):
     """Blur
     convert my_out.jpg -virtual-pixel Mirror -gaussian-blur 0x8 -scale 252x336 -quality 90 my_out_blur.jpg"""
-    get_dir("blur")
+    get_dir(dist_path, "blur")
     params = ["-virtual-pixel",
               "Mirror",
               "-gaussian-blur",

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from graphic.graphic import *
+from graphic.convert import *
 import os
 
 image = os.path.abspath('_LST8799.jpg')

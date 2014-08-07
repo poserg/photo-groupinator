@@ -6,11 +6,8 @@ class Image(object):
     def __repr__(self):
         return "<Image('%s')>" % (self.name)
         
-class Group(object):
+class Group(Image):
     
-    def __init__(self, name):
-        self.name = name
-        
     def __repr__(self):
         return "<Group('%s')>" % (self.name)
 
