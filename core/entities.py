@@ -1,10 +1,11 @@
 class Image(object):
     
-    def __init__(self, name):
+    def __init__(self, name, path):
         self.name = name
+        self.path = path
         
     def __repr__(self):
-        return "<Image('%s')>" % (self.name)
+        return "<Image('%s', '%s')>" % (self.name, self.path)
         
 class Group(Image):
     

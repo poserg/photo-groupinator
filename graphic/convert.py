@@ -2,6 +2,7 @@
 
 # from PIL import Image
 from subprocess import call
+from shutil import copy
 import os
 
 MAIN_IMAGE = ("main", "1600x1067")
@@ -73,6 +74,9 @@ def convert_image(additional_params):
     if retcode != 0:
         print "Error with coverting file: " + additional_params[-2]
     # print ("Image converted")
+
+def copy_image(image_path, dist_path):
+  copy(image_path, get_dir(dist_path, "orig"))
 
 #def find_duplicate(path):
     
