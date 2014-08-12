@@ -3,7 +3,7 @@
 
 from sys import argv
 from os import path, listdir
-from graphic import convert
+from graphic.convert import *
 
 def print_help():
 	print ("Help info")
@@ -23,8 +23,7 @@ else:
 	files = listdir(p[0])
 	print files
 	image_files = filter(lambda x: path.splitext(p[0] + '/' + x)[1].upper() in [".JPG", ".JPEG", ".PNG"],files)
-	for i in files:
-		ext = path.splitext(p[0] + '/' + i)[1]
-		if ext != ".png" and ext != ".JPG":
-			files.remove(i)
-	print files
+
+	map(lambda x: blur_image(x, p[1]), image_files)
+	map(lambda x: resize_image(x, p[1], THUMBS_IMAGE), image_files)
+	map(lambda x: resize_image(x, p[1], MAIN_IMAGE), image_files)
