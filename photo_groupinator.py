@@ -4,7 +4,7 @@
 from sys import argv
 from os import path, listdir
 from graphic.convert import *
-from core import *
+from dao.db import DBUtil
 
 def print_help():
 	print ("Help info")

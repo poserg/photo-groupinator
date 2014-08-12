@@ -7,10 +7,10 @@ class DBUtil:
     def __init__(self, path):
         self._engine = create_engine('sqlite:///' + path + 'store.db')
 
-        create_db(_engine)
+        self.create_db(self._engine)
 
     def insert_image(self, name, image_path):
-        Session = sessionmaker(bind = _engine)
+        Session = sessionmaker(bind = self._engine)
         image = Image(name, image_path)
         session = Session()
         session.add(image)
@@ -19,7 +19,7 @@ class DBUtil:
         t = session.query(Image).order_by(Image.id)[0]
         print (t)
 
-    def create_db(engine):
+    def create_db(self, engine):
         metadata = MetaData()
         
         image_table = Table('image', metadata,
