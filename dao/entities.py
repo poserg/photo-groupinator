@@ -1,11 +1,17 @@
 class Image(object):
     
-    def __init__(self, name, path):
+    def __init__(self, name):
         self.name = name
-        self.path = path
         
     def __repr__(self):
-        return "<Image('%s', '%s')>" % (self.name, self.path)
+        return "<Image('%s')>" % (self.name)
+
+    @property
+    def serialize(self):
+        """Returns object data in easily serializeable format"""
+        return {"id" : self.id,
+                "name" : self.name
+        }
         
 class Group(Image):
     

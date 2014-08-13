@@ -21,8 +21,12 @@ else:
 			if (len(p) > 2):
 				print_help()
 
-	files = listdir(p[0])
-	print files
+	if p[0][-1] == '/':
+		source_path = p[0]
+	else:
+		source_path = p[0] + '/'
+	files = map(lambda x: source_path + x, listdir(p[0]))
+	# print files
 	image_files = filter(lambda x: path.splitext(p[0] + '/' + x)[1].upper() in [".JPG", ".JPEG", ".PNG"],files)
 
 	# map(lambda x: blur_image(x, p[1]), image_files)
@@ -31,13 +35,14 @@ else:
 	# map(lambda x: copy_image(x, p[1]), image_files)
 
 	db_util = DBUtil(p[1])
+	db_util.create_db()
 
 	for image in image_files:
-		blur_image(image, p[1])
+		# blur_image(image, p[1])
 		resize_image(image, p[1], THUMBS_IMAGE)
 		resize_image(image, p[1], MAIN_IMAGE)
 		copy_image(image, p[1])
 
 		name = path.basename(image)
-		db_util.insert_image(name, image)
+		db_util.insert_image(name)
 
