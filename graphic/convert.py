@@ -1,34 +1,16 @@
 # -*- coding: utf-8 -*-
 
+from sys import path as sys_path
+sys_path.append('../')
+
 # from PIL import Image
 from subprocess import call
-from shutil import copy
-import os
+
+from util.fs_util import get_dir, get_dist_path, copy_file
 
 MAIN_IMAGE = ("main", "1600x1067")
 THUMBS_IMAGE = ("thumbs", "168x112")
 BLUR_IMAGE = ("blur")
-
-def mkdir(path):
-    #os.makedirs(path, exist_ok = True)
-    try:
-      os.makedirs(path)
-    except OSError, e:
-      #print "Directory is exists"
-      pass
-    return path
-    # d = os.path.dirname(path)
-    # if not os.path.exists(d):
-    #     os.makedirs(d)
-        
-    # return d
-
-def get_dir(path, file_name):
-  if len(path) > 0 and path[-1] == "/":
-    return mkdir(path + file_name)
-  else:
-    return mkdir(path + "/" + file_name)
-
 
 def resize_image(image_path, dist_path, t):
     """Generate main image
@@ -38,19 +20,19 @@ def resize_image(image_path, dist_path, t):
     convert -quality 90 -resize 168x112 IMG_1203.JPG my_out.jpg"""
 
 
-    dist_path = get_dir(dist_path, t[0])
+    dist_path = get_dist_path(dist_path, t[0], image_path)
     params = [
         "-resize",
         t[1],
         image_path,
-        dist_path + "/" + os.path.basename(image_path)
+        dist_path
         ]
     convert_image(params)
     
 def blur_image(image_path, dist_path):
     """Blur
     convert my_out.jpg -virtual-pixel Mirror -gaussian-blur 0x8 -scale 252x336 -quality 90 my_out_blur.jpg"""
-    dist_path = get_dir(dist_path, "blur")
+    dist_path = get_dist_path(dist_path, "blur", image_path)
     params = ["-virtual-pixel",
               "Mirror",
               "-gaussian-blur",
@@ -58,7 +40,7 @@ def blur_image(image_path, dist_path):
               "-scale",
               "252x336",
               image_path,
-              dist_path + "/" + os.path.basename(image_path)]
+              dist_path]
     convert_image(params)
     
 def convert_image(additional_params):
@@ -76,7 +58,7 @@ def convert_image(additional_params):
     # print ("Image converted")
 
 def copy_image(image_path, dist_path):
-  copy(image_path, get_dir(dist_path, "orig"))
+  copy_file(image_path, get_dir(dist_path, "orig"))
 
 #def find_duplicate(path):
     

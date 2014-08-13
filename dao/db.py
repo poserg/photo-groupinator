@@ -2,10 +2,15 @@ from sqlalchemy import create_engine, Column, Integer, String, MetaData, Foreign
 from sqlalchemy.orm import sessionmaker, mapper
 from entities import *
 
+from sys import path
+path.append('../')
+
+from util.fs_util import mkdir
+
 class DBUtil:
 
     def __init__(self, path):
-        self._engine = create_engine('sqlite:///' + path + 'store.db')
+        self._engine = create_engine('sqlite:///' + mkdir(path) + '/store.db')
 
         self.create_db(self._engine)
 
