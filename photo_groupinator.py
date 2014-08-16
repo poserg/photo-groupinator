@@ -4,6 +4,7 @@
 from sys import argv
 from os import path, listdir
 from graphic.convert import *
+from graphic.image_info import get_create_date
 from dao.db import DBUtil
 
 def print_help():
@@ -44,5 +45,6 @@ else:
 		copy_image(image, p[1])
 
 		name = path.basename(image)
-		db_util.insert_image(name)
+		create_date = get_create_date(image)
+		db_util.insert_image(name, create_date)
 

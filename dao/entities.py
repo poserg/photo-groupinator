@@ -1,16 +1,18 @@
 class Image(object):
     
-    def __init__(self, name):
+    def __init__(self, name, create_date):
         self.name = name
+        self.create_date = create_date
         
     def __repr__(self):
-        return "<Image('%s')>" % (self.name)
+        return "<Image('%s', '%s')>" % (self.name, self.create_date)
 
     @property
     def serialize(self):
         """Returns object data in easily serializeable format"""
         return {"id" : self.id,
-                "name" : self.name
+                "name" : self.name,
+                "create_date" : self.create_date
         }
         
 class Group(Image):

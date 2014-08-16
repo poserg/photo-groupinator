@@ -14,8 +14,8 @@ class DBUtil:
         self.Session = sessionmaker(bind = self._engine)
         self.map_objects()
 
-    def insert_image(self, name):
-        image = Image(name)
+    def insert_image(self, name, create_date):
+        image = Image(name, create_date)
         session = self.Session()
         session.add(image)
         session.commit()
@@ -39,7 +39,8 @@ class DBUtil:
         
         image_table = Table('image', self.metadata,
                             Column('id', Integer, primary_key = True),
-                            Column('name', String)
+                            Column('name', String),
+                            Column('create_date', String)
         )
         
         group_table = Table('group', self.metadata, 

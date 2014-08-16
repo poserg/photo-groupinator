@@ -21,7 +21,7 @@ def get_photo(photo_id):
     	image = db.get_image_by_id(photo_id)
     	if type(image) is Image:
         	#return 'Photo %s' % image.name
-        	return jsonify(id = image.id, name = image.name)
+        	return jsonify(id = image.id, name = image.name, create_date = image.create_date)
         else:
         	abort(404)
     elif request.method == 'PUT':

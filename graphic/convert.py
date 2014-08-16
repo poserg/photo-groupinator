@@ -3,10 +3,10 @@
 from sys import path as sys_path
 sys_path.append('../')
 
-# from PIL import Image
 from subprocess import call
-
 from util.fs_util import get_dir, get_dist_path, copy_file
+
+from image_info import get_info
 
 MAIN_IMAGE = ("main", "1600x1067")
 THUMBS_IMAGE = ("thumbs", "168x112")
@@ -21,6 +21,7 @@ def resize_image(image_path, dist_path, t):
 
 
     dist_path = get_dist_path(dist_path, t[0], image_path)
+    get_info(image_path)
     params = [
         "-resize",
         t[1],
