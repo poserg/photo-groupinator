@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, MetaData, ForeignKey, MetaData, Table
+from sqlalchemy import create_engine, Column, Integer, String, MetaData, ForeignKey, MetaData, Table, DateTime
 from sqlalchemy.orm import sessionmaker, mapper
 from entities import *
 
@@ -40,7 +40,7 @@ class DBUtil:
         image_table = Table('image', self.metadata,
                             Column('id', Integer, primary_key = True),
                             Column('name', String),
-                            Column('create_date', String)
+                            Column('create_date', DateTime)
         )
         
         group_table = Table('group', self.metadata, 
