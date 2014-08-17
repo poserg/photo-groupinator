@@ -40,7 +40,7 @@ class DBUtil:
         image_table = Table('image', self.metadata,
                             Column('id', Integer, primary_key = True),
                             Column('name', String),
-                            Column('create_date', DateTime)
+                            Column('create_date', String)
         )
         
         group_table = Table('group', self.metadata, 
