@@ -8,6 +8,9 @@ from util.fs_util import get_dir, get_dist_path, copy_file
 
 from image_info import get_info
 
+import logging
+logging.basicConfig(format = u'%(filename)s[LINE:%(lineno)d]# %(levelname)-8s [%(asctime)s]  %(message)s', level = logging.DEBUG)
+
 MAIN_IMAGE = ("main", "1600x1067")
 THUMBS_IMAGE = ("thumbs", "168x112")
 BLUR_IMAGE = ("blur")
@@ -45,7 +48,7 @@ def blur_image(image_path, dist_path):
     convert_image(params)
     
 def convert_image(additional_params):
-    # print ("Start convert image")
+    logging.debug("Start convert image")
     params =["convert",
              "-quality",
              "90"
@@ -55,8 +58,8 @@ def convert_image(additional_params):
     retcode = call(params)
     
     if retcode != 0:
-        print "Error with coverting file: " + additional_params[-2]
-    # print ("Image converted")
+        logging.error("Error with coverting file: " + additional_params[-2])
+    logging.debug("Image converted")
 
 def copy_image(image_path, dist_path):
   copy_file(image_path, get_dir(dist_path, "orig"))

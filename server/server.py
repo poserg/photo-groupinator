@@ -6,6 +6,9 @@ sys_path.append('../')
 from flask import Flask, request, jsonify, abort
 from dao.db import *
 
+import logging
+logging.basicConfig(format = u'%(filename)s[LINE:%(lineno)d]# %(levelname)-8s [%(asctime)s]  %(message)s', level = logging.DEBUG)
+
 app = Flask(__name__)
 app.debug = True
 

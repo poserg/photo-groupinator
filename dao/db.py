@@ -7,15 +7,21 @@ sys_path.append('../')
 
 from util.fs_util import mkdir
 
+import logging
+
+logging.basicConfig(format = u'%(filename)s[LINE:%(lineno)d]# %(levelname)-8s [%(asctime)s]  %(message)s', level = logging.DEBUG)
+
 class DBUtil:
 
     def __init__(self, path):
+        logging.info("DB path = " + path)
         self._engine = create_engine('sqlite:///' + mkdir(path) + '/store.db')
         self.Session = sessionmaker(bind = self._engine)
         self.map_objects()
 
     def insert_image(self, name, create_date):
         image = Image(name, create_date)
+        logging.info("Insert image: " + image.serialize())
         session = self.Session()
         session.add(image)
         session.commit()
@@ -27,10 +33,12 @@ class DBUtil:
         self.metadata.create_all(self._engine)
 
     def get_image_by_id(self, id):
+        logging.info("Get image by id = " + str(id))
         session = self.Session()
         return session.query(Image).filter(Image.id == id).first()
 
     def get_images(self):
+        logging.info("Get all images")
         session = self.Session()
         return session.query(Image).all()
 
