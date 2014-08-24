@@ -1,13 +1,16 @@
-//(function($) {
-	var Appointment = Backbone.Model.extend({});
-	var appointment = new Appointment;
-	appointment.set({'title': 'My Title'});
-	var AppointmentView = Backbone.View.extend({
-    	render: function() {
-        	$(this.el).html('<li>' + this.model.get('title') + '</li>');
-    	}
-	});
-	var appointmentView = new AppointmentView({model: appointment});
-	appointmentView.render();
-	$('#app').html(appointmentView.el);
-//})(jQuery)
+var Sidebar = Backbone.Model.extend({
+  promptColor: function() {
+    var cssColor = prompt("Пожалуйста, введите CSS-цвет:");
+    this.set({color: cssColor});
+  }
+});
+
+window.sidebar = new Sidebar;
+
+sidebar.on('change:color', function(model, color) {
+  $('#sidebar').css({background: color});
+});
+
+sidebar.set({color: 'red'});
+
+sidebar.promptColor();
