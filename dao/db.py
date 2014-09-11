@@ -42,6 +42,16 @@ class DBUtil:
         session = self.Session()
         return session.query(Image).all()
 
+    def get_group_by_id(self, id):
+        logging.info("Get groups by id = " + str(id))
+        session = self.Session()
+        return session.query(Group).filter(Group.id == id).first()
+        
+    def get_groups(self):
+        logging.info("Get all groups")
+        session = self.Session()
+        return session.query(Group).all()
+
     def map_objects(self):
         self.metadata = MetaData()
         

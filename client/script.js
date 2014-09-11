@@ -1,7 +1,6 @@
 //(function() {
-
-    var proxiedSync = Backbone.sync;
 /*
+    var proxiedSync = Backbone.sync;
     Backbone.sync = function(method, model, options) {
       options || (options = {});
 
@@ -35,7 +34,18 @@
     options.url = 'http://localhost:8080' + options.url;
   });
 
-  
+var Group = Backbone.Model.extend({
+  url: function() {
+    return "/group/" + this.id;
+  }
+});
+
+var Operation = Backbone.Model.extend({
+  url: function() {
+    return "/operation";
+  }
+});
+
   var Image = Backbone.Model.extend({
     defaults: {
       id: "",
@@ -43,12 +53,14 @@
       path: ""
     },
     url: function() {
-      return "http://localhost:8080/photo/" + this.id;
+      return "/photo/" + this.id;
     }
     //urlRoot: "/photo"
   });
 
   var ImageView = Backbone.View.extend({
+    tagName: 'li',
+    
     initialize: function() {
 
     },
@@ -56,6 +68,7 @@
     template: _.template($('#image-template').html()),
 
     render: function() {
+      console.log("Start ImageView.render()");
       this.$el.html(this.template(this.model.toJSON()));
 
       return this;
@@ -63,14 +76,25 @@
   });
 
   var ImageCollection = Backbone.Collection.extend({
-
+    model: Image,
     url: "/photo",
-    
-    model: Image
+
+    fetchSuccess: function(collection, response) {
+      console.log('Collection fetch success', response);
+      console.log('Collection models: ', this.collection);
+    },
+
+    fetchError: function (collection, response) {
+        throw new Error("Books fetch error");
+    },
+
+    parse: function(response) {
+      return response.photos;
+    }
   });
 
   var ImageCollectionView = Backbone.View.extend({
-    //tagName: 'ol'
+    tagName: 'ol',
 
   /*   initialize: function () {
         $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
@@ -79,6 +103,24 @@
         //options.url = 'http://cross-domain.nodejitsu.com' + options.url;
       });
      }*/
+
+    initialize: function() {
+      console.log("ImageCollectionView.initialize");
+      // console.log(this.collection.length);
+      this.collection.bind("reset", this.render);
+      //this.collection.fetch();
+    },
+    
+    render: function() {
+      console.log("Start ImageCollectionView.render");
+      // console.log(this.collection.lenght);
+      this.collection.each(function(img) {
+        var imageView = new ImageView({ model: img });
+        this.$el.append(imageView.render().el);
+      }, this);
+
+      return this;
+    }
   });
 
   var imageCollection = new ImageCollection;
@@ -97,10 +139,13 @@
     }
   });
 
-  var imageCollection = new ImageCollection();
-  imageCollection.fetch();
-  var imageCollectionView = new ImageCollectionView({
-    collection: imageCollection
-  });
-  $('body').append(imageCollectionView.render().el);
+var imageCollection = new ImageCollection;
+imageCollection.fetch({
+  success: function() {
+    var imageCollectionView = new ImageCollectionView({
+      collection: imageCollection
+    });
+    $('body').append(imageCollectionView.render().el);
+  }
+});
 //})();

@@ -84,8 +84,22 @@ def get_photos():
 
 @app.route('/group/<int:group_id>', methods=['GET', 'PUT', 'DELETE'])
 def group(group_id):
-    pass
+    if request.method == 'GET':
+        group = db.get_group_by_id(group_id)
+        if type(group) is Group:
+            return jsonify(id = group.id, name = group.name)
+        else
+            return abort(404)
+    elif request.method == 'PUT':
+        pass
+    elif request.method == 'DELETE':
+        pass
 
+@app.route('/group', method=['GET'])
+def get_groups():
+    groups = db.get_groups()
+    return jsonify(groups=[i.serialize for i in groups])
+    
 @app.route('/group', methods=['POST'])
 def create_group():
     pass
