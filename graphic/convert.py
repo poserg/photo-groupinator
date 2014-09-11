@@ -54,7 +54,7 @@ def convert_image(additional_params):
              "90"
              ]
     params += additional_params
-    print (params)
+    logging.debug (params)
     retcode = call(params)
     
     if retcode != 0:

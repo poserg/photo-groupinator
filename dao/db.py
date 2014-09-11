@@ -21,7 +21,7 @@ class DBUtil:
 
     def insert_image(self, name, create_date):
         image = Image(name, create_date)
-        logging.info("Insert image: " + image.serialize())
+        #logging.info("Insert image: " + image.serialize())
         session = self.Session()
         session.add(image)
         session.commit()

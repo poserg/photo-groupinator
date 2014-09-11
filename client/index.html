@@ -1,11 +1,23 @@
+<!DOCTYPE HTML>
 <html>
 <head>
 </head>
 <body>
+  <script type="text/template" id="image-template">
+    <li><strong><%= id %> <%= name %></strong>: <%= path %></li>
+  </script>
+  <form id="add-new-group">
+    <input type="text" required placeholder="name" class="name-input"/>
+    <input type="submit" value="Add group"/>
+  </form>
 	<div id='app'></div>
+        <!--
 	<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.js"></script>
 	<script type="text/javascript" src="http://underscorejs.org/underscore.js"></script>
-	<script type="text/javascript" src="http://backbonejs.org/backbone.js"></script>
+	<script type="text/javascript" src="http://backbonejs.org/backbone.js"></script> -->
+	<script type="text/javascript" src="jquery-2.1.1.js"></script>
+	<script type="text/javascript" src="underscore.js"></script>
+	<script type="text/javascript" src="backbone.js"></script>
 	<script type="text/javascript" src="script.js"></script>
 </body>
 </html>
