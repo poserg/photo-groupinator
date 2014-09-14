@@ -24,6 +24,8 @@
     headers: { 'X-Requested-With' : 'XMLHttpRequest' }
   });
 */
+var serverPath = 'http://localhost:8080';
+
   $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
     options.crossDomain ={
         crossDomain: true
@@ -31,7 +33,7 @@
     options.xhrFields = {
         withCredentials: true
     };*/
-    options.url = 'http://localhost:8080' + options.url;
+    options.url = serverPath + options.url;
   });
 
 var Group = Backbone.Model.extend({
@@ -54,6 +56,11 @@ var Operation = Backbone.Model.extend({
     },
     url: function() {
       return "/photo/" + this.id;
+    },
+
+    initialize: function() {
+      this.os
+      this.path = serverPath + '/static/thumbs/' + this.name;
     }
     //urlRoot: "/photo"
   });
@@ -75,9 +82,27 @@ var Operation = Backbone.Model.extend({
     }
   });
 
+var ThumbView = Backbone.View.extend({
+  template: _.template($('#thumb-template').html()),
+
+  render: function() {
+    this.$el.html(this.template(this.model.toJSON()));
+
+    return this;
+  }
+});
+
   var ImageCollection = Backbone.Collection.extend({
     model: Image,
     url: "/photo",
+
+    initialize: function() {
+      this.on('add', this.addOne, this);
+    },
+
+    addOne: function(img) {
+      img.set('path', serverPath + '/static/thumbs/' + img.get('name'));
+    },
 
     fetchSuccess: function(collection, response) {
       console.log('Collection fetch success', response);
@@ -94,7 +119,7 @@ var Operation = Backbone.Model.extend({
   });
 
   var ImageCollectionView = Backbone.View.extend({
-    tagName: 'ol',
+    //tagName: 'ol',
 
   /*   initialize: function () {
         $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
@@ -115,8 +140,8 @@ var Operation = Backbone.Model.extend({
       console.log("Start ImageCollectionView.render");
       // console.log(this.collection.lenght);
       this.collection.each(function(img) {
-        var imageView = new ImageView({ model: img });
-        this.$el.append(imageView.render().el);
+        var thumbView = new ThumbView({ model: img });
+        this.$el.append(thumbView.render().el);
       }, this);
 
       return this;
@@ -145,7 +170,20 @@ imageCollection.fetch({
     var imageCollectionView = new ImageCollectionView({
       collection: imageCollection
     });
-    $('body').append(imageCollectionView.render().el);
+    $('#app').append(imageCollectionView.render().el);
   }
 });
+
+var Router = Backbone.Router.extend({
+  routes: {
+    'g:group(/i:img)': 'show'
+  },
+
+  show: function(group, img) {
+    console.log('group = ' + group + ', img = ' + img + '.');
+  }
+});
+
+var router = new Router;
+Backbone.history.start();
 //})();

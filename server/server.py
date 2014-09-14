@@ -10,7 +10,7 @@ from dao.db import *
 import logging
 logging.basicConfig(format = u'%(filename)s[LINE:%(lineno)d]# %(levelname)-8s [%(asctime)s]  %(message)s', level = logging.DEBUG)
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder = '../images/static')
 app.debug = True
 
 db = DBUtil('../images')
@@ -88,14 +88,14 @@ def group(group_id):
         group = db.get_group_by_id(group_id)
         if type(group) is Group:
             return jsonify(id = group.id, name = group.name)
-        else
+        else:
             return abort(404)
     elif request.method == 'PUT':
         pass
     elif request.method == 'DELETE':
         pass
 
-@app.route('/group', method=['GET'])
+@app.route('/group', methods=['GET'])
 def get_groups():
     groups = db.get_groups()
     return jsonify(groups=[i.serialize for i in groups])

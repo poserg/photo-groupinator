@@ -12,8 +12,8 @@ import logging
 logging.basicConfig(format = u'%(filename)s[LINE:%(lineno)d]# %(levelname)-8s [%(asctime)s]  %(message)s', level = logging.DEBUG)
 
 MAIN_IMAGE = ("main", "1600x1067")
-THUMBS_IMAGE = ("thumbs", "168x112")
-BLUR_IMAGE = ("blur")
+THUMBS_IMAGE = ("static/thumbs", "168x112")
+BLUR_IMAGE = ("static/blur")
 
 def resize_image(image_path, dist_path, t):
     """Generate main image
@@ -43,6 +43,7 @@ def blur_image(image_path, dist_path):
               "0x8",
               "-scale",
               "252x336",
+              "-auto-orient",
               image_path,
               dist_path]
     convert_image(params)
@@ -51,7 +52,8 @@ def convert_image(additional_params):
     logging.debug("Start convert image")
     params =["convert",
              "-quality",
-             "90"
+             "90",
+            "-auto-orient"
              ]
     params += additional_params
     logging.debug (params)

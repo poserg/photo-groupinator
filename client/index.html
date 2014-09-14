@@ -9,6 +9,9 @@
   <script type="text/template" id="image-template">
     <%= id %> <strong><%= name %></strong>: <%= create_date %>
   </script>
+  <script type="text/template" id="thumb-template">
+    <div class="thumb" style="background-image: url('<%= path %>'); height: 168px; width: 112px;"/>
+  </script>
   <form id="add-new-group">
     <input type="text" required placeholder="name" class="name-input"/>
     <input type="submit" value="Add group"/>
