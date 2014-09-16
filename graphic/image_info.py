@@ -17,3 +17,7 @@ def get_field (exif,field) :
 		for (k,v) in exif.iteritems():
 			if TAGS.get(k) == field:
 				return v
+
+def get_size (path):
+    exif = Image.open(path)
+    return exif.size

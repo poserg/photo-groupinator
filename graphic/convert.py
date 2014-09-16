@@ -26,7 +26,7 @@ def resize_image(image_path, dist_path, t):
     dist_path = get_dist_path(dist_path, t[0], image_path)
     get_info(image_path)
     params = [
-        "-resize",
+        "-geometry",
         t[1],
         image_path,
         dist_path
@@ -43,7 +43,6 @@ def blur_image(image_path, dist_path):
               "0x8",
               "-scale",
               "252x336",
-              "-auto-orient",
               image_path,
               dist_path]
     convert_image(params)
@@ -53,7 +52,6 @@ def convert_image(additional_params):
     params =["convert",
              "-quality",
              "90",
-            "-auto-orient"
              ]
     params += additional_params
     logging.debug (params)
