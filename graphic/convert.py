@@ -6,13 +6,13 @@ sys_path.append('../')
 from subprocess import call
 from util.fs_util import get_dir, get_dist_path, copy_file
 
-from image_info import get_info
+from image_info import get_info, get_orientation
 
 import logging
 logging.basicConfig(format = u'%(filename)s[LINE:%(lineno)d]# %(levelname)-8s [%(asctime)s]  %(message)s', level = logging.DEBUG)
 
-MAIN_IMAGE = ("main", "1600x1067")
-THUMBS_IMAGE = ("static/thumbs", "168x112")
+MAIN_IMAGE = ("main", "1600", "1067")
+THUMBS_IMAGE = ("static/thumbs", "168", "112")
 BLUR_IMAGE = ("static/blur")
 
 def resize_image(image_path, dist_path, t):
@@ -25,9 +25,16 @@ def resize_image(image_path, dist_path, t):
 
     dist_path = get_dist_path(dist_path, t[0], image_path)
     get_info(image_path)
+
+    width = t[1]
+    height = t[2]
+    if get_orientation(image_path):
+        width = t[2]
+        height = t[1]
+        
     params = [
         "-geometry",
-        t[1],
+        width + "x" + height,
         image_path,
         dist_path
         ]
@@ -52,6 +59,7 @@ def convert_image(additional_params):
     params =["convert",
              "-quality",
              "90",
+             "-auto-orient"
              ]
     params += additional_params
     logging.debug (params)

@@ -4,15 +4,14 @@ from PIL import Image
 from PIL.ExifTags import TAGS
 
 def get_info(path):
-	exif = Image.open(path)._getexif()
-	print (get_field(exif, 'DateTime'))
+	print (get_field(path, 'DateTime'))
 
 def get_create_date(path):
-	exif = Image.open(path)._getexif()
-	return get_field(exif, 'DateTime')
+	return get_field(path, 'DateTime')
 
 
-def get_field (exif,field) :
+def get_field (path,field) :
+	exif = get_exif(path)
 	if (exif is not None):
 		for (k,v) in exif.iteritems():
 			if TAGS.get(k) == field:
@@ -21,3 +20,18 @@ def get_field (exif,field) :
 def get_size (path):
     exif = Image.open(path)
     return exif.size
+
+def get_exif(path):
+    return Image.open(path)._getexif()
+
+def get_fields(path):
+    exif = get_exif(path)
+    for (k, v) in exif.iteritems():
+        print '%s = %s' % (TAGS.get(k), v)
+
+def get_orientation(path):
+    orientation = get_field(path, 'Orientation')
+    if orientation is not None:
+        return int(orientation) > 4
+    else:
+        return False
