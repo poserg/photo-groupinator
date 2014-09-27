@@ -9,7 +9,8 @@
     <%= id %> <strong><%= name %></strong>: <%= create_date %>
   </script>
   <script type="text/template" id="thumb-template">
-    <div class="thumb" style="background: url('<%= path %>') no-repeat; height: 112px; width: 168px;"/>
+    <!-- <div class="thumb" style="background: url('<%= path %>') no-repeat; height: 112px; width: 168px;"/> -->
+    <img class="thumb" src="<%= path %>"/>
     <!--<div class="thumb" style="background: url('<%= path %>') 0 100% no-repeat"/>-->
   </script>
   <form id="add-new-group">

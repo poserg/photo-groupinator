@@ -29,8 +29,8 @@ def resize_image(image_path, dist_path, t):
     width = t[1]
     height = t[2]
     if get_orientation(image_path):
-        width = t[2]
-        height = t[1]
+        width = t[1]
+        height = str(int(t[1])/2*3)
         
     params = [
         "-geometry",
