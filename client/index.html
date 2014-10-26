@@ -7,6 +7,7 @@
   </noscript>
   <script type="text/template" id="image-template">
     <%= id %> <strong><%= name %></strong>: <%= create_date %>
+    <img class="main" src="<%= path %>"/>
   </script>
   <script type="text/template" id="thumb-template">
     <!-- <div class="thumb" style="background: url('<%= path %>') no-repeat; height: 112px; width: 168px;"/> -->
@@ -17,6 +18,8 @@
     <input type="text" required placeholder="name" class="name-input"/>
     <input type="submit" value="Add group"/>
   </form>
+  <div id="main">
+  </div>
 	<div id="app" style="top: 0px; left: auto; right: 0px; bottom: 0px; overflow-y: scroll;
                              overflow-x: hidden; position: absolute;"></div>
         <!--

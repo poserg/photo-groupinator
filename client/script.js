@@ -52,24 +52,33 @@ var Operation = Backbone.Model.extend({
     defaults: {
       id: "",
       name: "",
-      path: ""
+      path: "",
+      create_date: ""
     },
     url: function() {
       return "/photo/" + this.id;
     },
 
     initialize: function() {
-      this.os
+      // this.os
       this.path = serverPath + '/static/thumbs/' + this.name;
     }
     //urlRoot: "/photo"
   });
 
+var MainImage = Image.extend({
+  initialize: function() {
+    this.on('change:name', function() {
+      this.set('path', serverPath + '/static/main/' + this.get('name'));
+    });
+  }
+});
+
   var ImageView = Backbone.View.extend({
     tagName: 'li',
     
     initialize: function() {
-
+      this.model.on('change:name', this.render, this);
     },
     
     template: _.template($('#image-template').html()),
@@ -82,13 +91,27 @@ var Operation = Backbone.Model.extend({
     }
   });
 
+var mainImage = new MainImage();
+
 var ThumbView = Backbone.View.extend({
   template: _.template($('#thumb-template').html()),
+
+  events: {
+    'click .thumb': 'onClick'
+  },
 
   render: function() {
     this.$el.html(this.template(this.model.toJSON()));
 
     return this;
+  },
+
+  onClick: function() {
+    console.log("Thumb's click");
+    console.log("id = " + this.model.get('id'));
+    mainImage.set({'id': this.model.get('id'),
+                   'name': this.model.get('name'),
+                   'create_date': this.model.get('create_date')});
   }
 });
 
@@ -110,7 +133,7 @@ var ThumbView = Backbone.View.extend({
     },
 
     fetchError: function (collection, response) {
-        throw new Error("Books fetch error");
+        throw new Error("Collection fetch error");
     },
 
     parse: function(response) {
@@ -173,6 +196,9 @@ imageCollection.fetch({
     $('#app').append(imageCollectionView.render().el);
   }
 });
+
+var mainImageView = new ImageView({ model: mainImage});
+$('#main').append(mainImageView.render().el);
 
 var Router = Backbone.Router.extend({
   routes: {

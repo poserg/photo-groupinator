@@ -11,7 +11,7 @@ from image_info import get_info, get_orientation
 import logging
 logging.basicConfig(format = u'%(filename)s[LINE:%(lineno)d]# %(levelname)-8s [%(asctime)s]  %(message)s', level = logging.DEBUG)
 
-MAIN_IMAGE = ("main", "1600", "1067")
+MAIN_IMAGE = ("static/main", "1600", "1067")
 THUMBS_IMAGE = ("static/thumbs", "168", "112")
 BLUR_IMAGE = ("static/blur")
 
