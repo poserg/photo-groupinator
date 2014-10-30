@@ -43,10 +43,8 @@ def resize_image(image_path, dist_path, t):
 def blur_image(image_path, dist_path):
     """Blur
     convert my_out.jpg -virtual-pixel Mirror -gaussian-blur 0x8 -scale 252x336 -quality 90 my_out_blur.jpg"""
-    dist_path = get_dist_path(dist_path, "blur", image_path)
-    params = ["-virtual-pixel",
-              "Mirror",
-              "-gaussian-blur",
+    dist_path = get_dist_path(dist_path, BLUR_IMAGE, image_path)
+    params = ["-blur",
               "0x8",
               "-scale",
               "252x336",

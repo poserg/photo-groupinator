@@ -70,12 +70,13 @@ var MainImage = Image.extend({
   initialize: function() {
     this.on('change:name', function() {
       this.set('path', serverPath + '/static/main/' + this.get('name'));
+      this.set('blur', serverPath + '/static/blur/' + this.get('name'));
     });
   }
 });
 
   var ImageView = Backbone.View.extend({
-    tagName: 'li',
+    el: '#main',
     
     initialize: function() {
       this.model.on('change:name', this.render, this);
@@ -90,6 +91,22 @@ var MainImage = Image.extend({
       return this;
     }
   });
+
+var BackgroundImageView = Backbone.View.extend({
+  //el: '#main',
+  
+  template: _.template($('#background-template').html()),
+
+  initialize: function() {
+    this.model.on('change:name', this.render, this);
+  },
+  
+  render: function() {
+    this.$el.html(this.template(this.model.toJSON()));
+
+    return this;
+  }
+});
 
 var mainImage = new MainImage();
 
@@ -142,6 +159,7 @@ var ThumbView = Backbone.View.extend({
   });
 
   var ImageCollectionView = Backbone.View.extend({
+    el: '#app',
     //tagName: 'ol',
 
   /*   initialize: function () {
@@ -187,17 +205,32 @@ var ThumbView = Backbone.View.extend({
     }
   });
 
+var mainImageView = new ImageView({ model: mainImage});
+var backgroundView = new BackgroundImageView({ model: mainImage});
 var imageCollection = new ImageCollection;
 imageCollection.fetch({
   success: function() {
     var imageCollectionView = new ImageCollectionView({
       collection: imageCollection
     });
-    $('#app').append(imageCollectionView.render().el);
+    // $('#main').append(backgroundView.render().el);
+    //backgroundView.render();
+    
+
+    
+    //$('#background').append("<div>imageCollectionView.render().el</div>");
+
+    //$('#app').append(imageCollectionView.render().el);
+    imageCollectionView.render();
+    var img = imageCollection.at(0);
+
+    if (img != null) {
+      mainImage.set({'id': img.get('id'), 'name': img.get('name'),
+                    'create_date': img.get('create_date')});
+    }
   }
 });
 
-var mainImageView = new ImageView({ model: mainImage});
 $('#main').append(mainImageView.render().el);
 
 var Router = Backbone.Router.extend({

@@ -39,7 +39,7 @@ else:
 	db_util.create_db()
 
 	for image in image_files:
-		# blur_image(image, p[1])
+		blur_image(image, p[1])
 		resize_image(image, p[1], THUMBS_IMAGE)
 		resize_image(image, p[1], MAIN_IMAGE)
 		copy_image(image, p[1])

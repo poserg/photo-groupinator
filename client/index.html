@@ -5,9 +5,12 @@
   <noscript>
     <h2>JavaScript required.</h2>
   </noscript>
+  <script type="text/template" id="background-template">
+    <div id="background" style="background: url('<%= blur %>') 100% 100% no-repeat"/>
+  </script>
   <script type="text/template" id="image-template">
-    <%= id %> <strong><%= name %></strong>: <%= create_date %>
-    <img class="main" src="<%= path %>"/>
+    <img class="main-photo" src="<%= path %>" height="90%"/>
+    <!-- <div class="main" style="background: url('<%= path %>') 0 100% no-repeat"/> -->
   </script>
   <script type="text/template" id="thumb-template">
     <!-- <div class="thumb" style="background: url('<%= path %>') no-repeat; height: 112px; width: 168px;"/> -->
@@ -18,9 +21,9 @@
     <input type="text" required placeholder="name" class="name-input"/>
     <input type="submit" value="Add group"/>
   </form>
-  <div id="main">
+  <div id="main" class="main">
   </div>
-	<div id="app" style="top: 0px; left: auto; right: 0px; bottom: 0px; overflow-y: scroll;
+  <div id="app" style="top: 0px; left: auto; right: 0px; bottom: 0px; overflow-y: scroll;
                              overflow-x: hidden; position: absolute;"></div>
         <!--
 	<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.js"></script>
@@ -30,5 +33,6 @@
 	<script type="text/javascript" src="underscore.js"></script>
 	<script type="text/javascript" src="backbone.js"></script>
 	<script type="text/javascript" src="script.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
 </body>
 </html>
