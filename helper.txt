@@ -1,0 +1,5 @@
+// Run web server
+python -m SimpleHTTPServer
+
+// Send POST request with json mimetype
+curl -H "Content-type: application/json" -X POST http://localhost:8080/group -d '{"message":"Hello Data"}'

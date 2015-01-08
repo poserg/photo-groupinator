@@ -6,21 +6,32 @@
     <h2>JavaScript required.</h2>
   </noscript>
   <script type="text/template" id="background-template">
-    <div id="background" style="background: url('<%= blur %>') 100% 100% no-repeat"/>
+    <div id="background" style="background: url('<%= blur %>') 100% 100% no-repeat; 
+                                height: 100%; background-size: 100% 100%;"/>
   </script>
   <script type="text/template" id="image-template">
-    <img class="main-photo" src="<%= path %>" height="90%"/>
-    <!-- <div class="main" style="background: url('<%= path %>') 0 100% no-repeat"/> -->
+    <div id="background" style="background: url('<%= blur %>') 100% 100% no-repeat; 
+                                height: 100%; background-size: 100% 100%;">
+      <div style="margin-right: 250px; padding: 20px;">
+        <!-- <img class="main-photo" src="<%= path %>"/> -->
+        <div style="background: url('<%= path %>') center no-repeat; 
+                    background-size: 90%; height: 90%;
+                    box-shadow: 0 0 10px rgba(0,0,0,0.5);"/>
+      </div>
+    </div>
   </script>
   <script type="text/template" id="thumb-template">
     <!-- <div class="thumb" style="background: url('<%= path %>') no-repeat; height: 112px; width: 168px;"/> -->
     <img class="thumb" src="<%= path %>"/>
     <!--<div class="thumb" style="background: url('<%= path %>') 0 100% no-repeat"/>-->
   </script>
+<!--
   <form id="add-new-group">
     <input type="text" required placeholder="name" class="name-input"/>
     <input type="submit" value="Add group"/>
   </form>
+
+-->
   <div id="main" class="main">
   </div>
   <div id="app" style="top: 0px; left: auto; right: 0px; bottom: 0px; overflow-y: scroll;

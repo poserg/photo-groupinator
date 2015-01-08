@@ -3,6 +3,7 @@
 
 from sys import path as sys_path
 sys_path.append('../')
+import os
 from flask import Flask, request, jsonify, abort
 from flask.ext.cors import cross_origin
 from dao.db import *
@@ -11,6 +12,7 @@ import logging
 logging.basicConfig(format = u'%(filename)s[LINE:%(lineno)d]# %(levelname)-8s [%(asctime)s]  %(message)s', level = logging.DEBUG)
 
 app = Flask(__name__, static_folder = '../images/static')
+app.secret_key = os.urandom(24)
 app.debug = True
 
 db = DBUtil('../images')
@@ -60,7 +62,7 @@ def crossdomain(origin=None, methods=None, headers=None, max_age=21600, attach_t
 @app.route('/')
 #@crossdomain(origin='*')
 def main():
-    return 'Photo Groupinator'
+    return 'Photo Groupinator', 200
 
 @app.route('/photo/<int:photo_id>', methods=['GET', 'PUT'])
 #@crossdomain(origin='*')

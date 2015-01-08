@@ -53,7 +53,9 @@ var Operation = Backbone.Model.extend({
       id: "",
       name: "",
       path: "",
-      create_date: ""
+      create_date: "",
+      img_width: "",
+      img_height: ""
     },
     url: function() {
       return "/photo/" + this.id;
@@ -62,6 +64,7 @@ var Operation = Backbone.Model.extend({
     initialize: function() {
       // this.os
       this.path = serverPath + '/static/thumbs/' + this.name;
+
     }
     //urlRoot: "/photo"
   });
@@ -71,13 +74,13 @@ var MainImage = Image.extend({
     this.on('change:name', function() {
       this.set('path', serverPath + '/static/main/' + this.get('name'));
       this.set('blur', serverPath + '/static/blur/' + this.get('name'));
+      this.set('img_width', (window.innerWidth - 200) + 'px');
+      this.set('img_height', window.innerHeight + 'px');
     });
   }
 });
 
   var ImageView = Backbone.View.extend({
-    el: '#main',
-    
     initialize: function() {
       this.model.on('change:name', this.render, this);
     },
@@ -93,7 +96,7 @@ var MainImage = Image.extend({
   });
 
 var BackgroundImageView = Backbone.View.extend({
-  //el: '#main',
+  el: '#main',
   
   template: _.template($('#background-template').html()),
 
@@ -124,8 +127,8 @@ var ThumbView = Backbone.View.extend({
   },
 
   onClick: function() {
-    console.log("Thumb's click");
-    console.log("id = " + this.model.get('id'));
+    // console.log("Thumb's click");
+    // console.log("id = " + this.model.get('id'));
     mainImage.set({'id': this.model.get('id'),
                    'name': this.model.get('name'),
                    'create_date': this.model.get('create_date')});
@@ -189,8 +192,6 @@ var ThumbView = Backbone.View.extend({
     }
   });
 
-  var imageCollection = new ImageCollection;
-
   var AddNewGroupView = Backbone.View.extend({
     el: '#add-new-group',
     events: {
@@ -205,8 +206,8 @@ var ThumbView = Backbone.View.extend({
     }
   });
 
+// var backgroundView = new BackgroundImageView({ model: mainImage});
 var mainImageView = new ImageView({ model: mainImage});
-var backgroundView = new BackgroundImageView({ model: mainImage});
 var imageCollection = new ImageCollection;
 imageCollection.fetch({
   success: function() {
