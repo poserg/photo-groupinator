@@ -4,9 +4,10 @@
 from sys import path as sys_path
 sys_path.append('../')
 import os
-from flask import Flask, request, jsonify, abort
+from flask import Flask, request, jsonify, abort, Response
 from flask.ext.cors import cross_origin
 from dao.db import *
+from functools import wraps
 
 import logging
 logging.basicConfig(format = u'%(filename)s[LINE:%(lineno)d]# %(levelname)-8s [%(asctime)s]  %(message)s', level = logging.DEBUG)
@@ -59,6 +60,13 @@ def crossdomain(origin=None, methods=None, headers=None, max_age=21600, attach_t
         return update_wrapper(wrapped_function, f)
     return decorator
 
+def returns_json(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        r = f(*args, **kwargs)
+        return Response(r, content_type='application/json; charset=utf-8')
+    return decorated_function
+
 @app.route('/')
 #@crossdomain(origin='*')
 def main():
@@ -66,6 +74,7 @@ def main():
 
 @app.route('/photo/<int:photo_id>', methods=['GET', 'PUT'])
 #@crossdomain(origin='*')
+@returns_json
 def get_photo(photo_id):
     if request.method == 'GET':
     	image = db.get_image_by_id(photo_id)
@@ -82,7 +91,7 @@ def get_photo(photo_id):
 #@crossdomain(origin='*')
 def get_photos():
   	images = db.get_images()
-	return jsonify(photos=[i.serialize for i in images])
+	return jsonify(photos=[i.serialize for i in images]), 200, {'Content-Type': 'application/json; charset=utf-8'}
 
 @app.route('/group/<int:group_id>', methods=['GET', 'PUT', 'DELETE'])
 def group(group_id):
