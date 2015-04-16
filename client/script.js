@@ -24,6 +24,7 @@
     headers: { 'X-Requested-With' : 'XMLHttpRequest' }
   });
 */
+//var serverPath = 'http://192.168.1.33:8080';
 var serverPath = 'http://localhost:8080';
 
   $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
