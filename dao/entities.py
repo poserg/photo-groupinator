@@ -15,10 +15,19 @@ class Image(object):
                 "create_date" : self.create_date
         }
         
-class Group(Image):
+class Group(object):
+
+    def __init__(self, name):
+        self.name = name
     
     def __repr__(self):
         return "<Group('%s')>" % (self.name)
+
+    @property
+    def serialize(self):
+        return {"id" : self.id,
+                "name" : self.name
+        }
 
 class ImageGroup(object):
 

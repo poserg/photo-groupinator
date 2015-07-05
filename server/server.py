@@ -16,6 +16,9 @@ app = Flask(__name__, static_folder = '../images/static')
 app.secret_key = os.urandom(24)
 app.debug = True
 
+CONTENT_TYPE = {'Content-Type': 'application/json; charset=utf-8'}
+BAD_REQUEST = "BAD_REQUEST", 400
+
 db = DBUtil('../images')
 
 from datetime import timedelta
@@ -91,14 +94,14 @@ def get_photo(photo_id):
 #@crossdomain(origin='*')
 def get_photos():
   	images = db.get_images()
-	return jsonify(photos=[i.serialize for i in images]), 200, {'Content-Type': 'application/json; charset=utf-8'}
+	return jsonify(photos=[i.serialize for i in images]), 200, CONTENT_TYPE
 
 @app.route('/group/<int:group_id>', methods=['GET', 'PUT', 'DELETE'])
 def group(group_id):
     if request.method == 'GET':
         group = db.get_group_by_id(group_id)
         if type(group) is Group:
-            return jsonify(id = group.id, name = group.name)
+            return jsonify(id = group.id, name = group.name), 200, CONTENT_TYPE
         else:
             return abort(404)
     elif request.method == 'PUT':
@@ -113,7 +116,19 @@ def get_groups():
     
 @app.route('/group', methods=['POST'])
 def create_group():
-    pass
+    logging.info('Create group')
+    return make_group(request)
+
+def make_group(request):
+    logging.info('Make group')
+    data = request.json
+    if data:
+        name = "Unnamed" if not data.has_key('name') else data['name']
+        result = db.create_group(name)
+        if result > 0:
+            return "CREATED", 201
+    else:
+        return BAD_REQUEST
 
 if __name__ == '__main__':
     from flask.ext.cors import CORS

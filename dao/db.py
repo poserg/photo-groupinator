@@ -10,6 +10,8 @@ from util.fs_util import mkdir
 
 import logging
 
+from datetime import datetime
+
 logging.basicConfig(format = u'%(filename)s[LINE:%(lineno)d]# \
 %(levelname)-8s [%(asctime)s]  %(message)s', level = logging.DEBUG)
 
@@ -54,6 +56,14 @@ class DBUtil:
         logging.info("Get all groups")
         session = self.Session()
         return session.query(Group).all()
+
+    def create_group(self, name):
+        logging.info("Create group")
+        session = self.Session()
+        group = Group(name)
+        session.add(group)
+        session.commit()
+        return group.id
 
     def map_objects(self):
         self.metadata = MetaData()
