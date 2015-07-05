@@ -1,4 +1,5 @@
-from sqlalchemy import create_engine, Column, Integer, String, MetaData, ForeignKey, MetaData, Table, DateTime
+from sqlalchemy import create_engine, Column, Integer, String, \
+     MetaData, ForeignKey, MetaData, Table, DateTime
 from sqlalchemy.orm import sessionmaker, mapper
 from entities import *
 
@@ -9,13 +10,15 @@ from util.fs_util import mkdir
 
 import logging
 
-logging.basicConfig(format = u'%(filename)s[LINE:%(lineno)d]# %(levelname)-8s [%(asctime)s]  %(message)s', level = logging.DEBUG)
+logging.basicConfig(format = u'%(filename)s[LINE:%(lineno)d]# \
+%(levelname)-8s [%(asctime)s]  %(message)s', level = logging.DEBUG)
 
 class DBUtil:
 
     def __init__(self, path):
         logging.info("DB path = " + path)
-        self._engine = create_engine('sqlite:///' + mkdir(path) + '/store.db')
+        self._engine = create_engine('sqlite:///' + mkdir(path) +
+                                     '/store.db')
         self.Session = sessionmaker(bind = self._engine)
         self.map_objects()
 
@@ -67,8 +70,12 @@ class DBUtil:
         )
 
         image_group_table = Table('image_group', self.metadata, 
-                                  Column('image_id', Integer, ForeignKey('image.id'), primary_key = True),
-                                  Column('group_id', Integer, ForeignKey('group.id'), primary_key = True)
+                                  Column('image_id', Integer,
+                                         ForeignKey('image.id'),
+                                         primary_key = True),
+                                  Column('group_id', Integer,
+                                         ForeignKey('group.id'),
+                                         primary_key = True)
         )
 
         operation_type_table = Table('operation_type', self.metadata,
@@ -79,12 +86,19 @@ class DBUtil:
         operation_table = Table('operation', self.metadata, 
                                 Column('id', Integer, primary_key = True),
                                 Column('name', String),
-                                Column('operation_type_id', Integer, ForeignKey('operation_type.id'))
+                                Column('operation_type_id', Integer,
+                                       ForeignKey('operation_type.id'))
         )
 
         operation_group_table = Table('operation_group', self.metadata, 
-                                      Column('operation_id', Integer, ForeignKey('operation.id'), primary_key = True),
-                                      Column('group_id', Integer, ForeignKey('group.id'), primary_key = True)
+                                      Column('operation_id', Integer,
+                                             ForeignKey('operation.id'),
+                                             primary_key = True),
+                                      Column('group_id', Integer,
+                                             ForeignKey('group.id'),
+                                             primary_key = True),
+                                      Column('sort_index', Integer,
+                                             default=0)
         )
 
         mapper(Image, image_table)

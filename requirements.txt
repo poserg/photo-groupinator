@@ -1,4 +1,5 @@
 SQLAlchemy
+alembic
 Flask
 Flask-Cors
 --allow-external PIL

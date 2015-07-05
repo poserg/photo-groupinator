@@ -38,6 +38,7 @@ class Operation(object):
 
 class OperationGroup(object):
 
-    def __init__(self, operation_id, group_id):
+    def __init__(self, operation_id, group_id, sort_index):
         self.operation_id = operation_id
         self.group_id = group_id
+        self.sort_index = sort_index
