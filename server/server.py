@@ -4,7 +4,9 @@
 from sys import path as sys_path
 sys_path.append('../')
 import os
+#from werkzeug.exceptions import BadRequest
 from flask import Flask, request, jsonify, abort, Response
+from flask_restful import Resource, Api
 from flask.ext.cors import cross_origin
 from dao.db import *
 from functools import wraps
@@ -15,6 +17,8 @@ logging.basicConfig(format = u'%(filename)s[LINE:%(lineno)d]# %(levelname)-8s [%
 app = Flask(__name__, static_folder = '../images/static')
 app.secret_key = os.urandom(24)
 app.debug = True
+
+api = Api(app)
 
 CONTENT_TYPE = {'Content-Type': 'application/json; charset=utf-8'}
 BAD_REQUEST = "BAD_REQUEST", 400
