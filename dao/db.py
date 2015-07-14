@@ -64,3 +64,8 @@ class DBUtil:
         session.add(group)
         session.commit()
         return group.id
+
+    def get_rules(self):
+        logging.info("Get all rules")
+        sessin = self.Session()
+        return session.query(Operation).all()

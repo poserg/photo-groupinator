@@ -80,7 +80,7 @@ def main():
     return 'Photo Groupinator', 200
 
 photo_resource_fields = {
-    'id': fields.String,
+    'id': fields.Integer,
     'name' : fields.String,
     'create_date' : fields.String
 }
@@ -103,10 +103,14 @@ class PhotoList(Resource):
 
 api.add_resource(PhotoList, '/photos')
 
-#group_resource_fields = {}
+group_resource_fields = {
+    'id' : fields.Integer,
+    'name' : fields.String,
+    'operations' : fields.List(fields.Integer)
+}
 
 class Group(Resource):
-    @marshal_with(photo_resource_fields)
+    @marshal_with(group_resource_fields)
     def get(self, id):
         group = db.get_group_by_id(id)
         if type(group) is Group:
@@ -139,6 +143,17 @@ def make_group(request):
     else:
         return BAD_REQUEST
 
+rule_resource_fields = {
+    'id': fields.Integer,
+    'name' : fields.String,
+    'type' : fields.String(attribute=lambda x: x.operation_type.name)
+}
+
+class RuleList(Resource):
+    @marshal_with(rule_resource_fields)
+    def get(self):
+        return db.get_rules()
+    
 if __name__ == '__main__':
     from flask.ext.cors import CORS
     cors = CORS(app)
