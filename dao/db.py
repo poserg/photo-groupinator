@@ -22,7 +22,7 @@ class DBUtil:
         self._engine = create_engine('sqlite:///' + mkdir(path) +
                                      '/store.db')
         self.Session = sessionmaker(bind = self._engine)
-        self.map_objects()
+        Base.metadata.create_all(self._engine)
 
     def insert_image(self, name, create_date):
         image = Image(name, create_date)
@@ -64,56 +64,3 @@ class DBUtil:
         session.add(group)
         session.commit()
         return group.id
-
-    def map_objects(self):
-        self.metadata = MetaData()
-        
-        image_table = Table('image', self.metadata,
-                            Column('id', Integer, primary_key = True),
-                            Column('name', String),
-                            Column('create_date', String)
-        )
-        
-        group_table = Table('group', self.metadata, 
-                            Column('id', Integer, primary_key = True),
-                            Column('name', String)
-        )
-
-        image_group_table = Table('image_group', self.metadata, 
-                                  Column('image_id', Integer,
-                                         ForeignKey('image.id'),
-                                         primary_key = True),
-                                  Column('group_id', Integer,
-                                         ForeignKey('group.id'),
-                                         primary_key = True)
-        )
-
-        operation_type_table = Table('operation_type', self.metadata,
-                                     Column('id', Integer, primary_key = True),
-                                     Column('name', String)
-        )
-
-        operation_table = Table('operation', self.metadata, 
-                                Column('id', Integer, primary_key = True),
-                                Column('name', String),
-                                Column('operation_type_id', Integer,
-                                       ForeignKey('operation_type.id'))
-        )
-
-        operation_group_table = Table('operation_group', self.metadata, 
-                                      Column('operation_id', Integer,
-                                             ForeignKey('operation.id'),
-                                             primary_key = True),
-                                      Column('group_id', Integer,
-                                             ForeignKey('group.id'),
-                                             primary_key = True),
-                                      Column('sort_index', Integer,
-                                             default=0)
-        )
-
-        mapper(Image, image_table)
-        mapper(Group, group_table)
-        mapper(ImageGroup, image_group_table)
-        mapper(OperationType, operation_type_table)
-        mapper(Operation, operation_table)
-        mapper(OperationGroup, operation_group_table)
