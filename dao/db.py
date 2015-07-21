@@ -37,10 +37,13 @@ class DBUtil:
     def create_db(self):
         self.metadata.create_all(self._engine)
 
-    def get_image_by_id(self, id):
-        logging.info("Get image by id = " + str(id))
+    def get_object_by_id(self, t, id):
+        logging.info("Get " + t.__tablename__ + " by id = " + str(id))
         session = self.Session()
-        return session.query(Image).filter(Image.id == id).first()
+        return session.query(t).filter(t.id == id).first()
+
+    def get_image_by_id(self, id):
+        return self.get_object_by_id(Image, id)
 
     def get_images(self):
         logging.info("Get all images")
@@ -48,9 +51,7 @@ class DBUtil:
         return session.query(Image).all()
 
     def get_group_by_id(self, id):
-        logging.info("Get groups by id = " + str(id))
-        session = self.Session()
-        return session.query(Group).filter(Group.id == id).first()
+        return self.get_object_by_id(Group, id)
         
     def get_groups(self):
         logging.info("Get all groups")
@@ -67,5 +68,8 @@ class DBUtil:
 
     def get_rules(self):
         logging.info("Get all rules")
-        sessin = self.Session()
+        session = self.Session()
         return session.query(Operation).all()
+
+    def get_rule_by_id(self, id):
+        return self.get_object_by_id(Operation, id)

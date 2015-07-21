@@ -61,6 +61,7 @@ class Group(Base):
 
 class OperationType(Base):
     __tablename__ = 'operation_type'
+    # :TODO May be String?
     id = Column(Integer, primary_key = True)
     name = Column(String)
 

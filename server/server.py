@@ -146,13 +146,37 @@ def make_group(request):
 rule_resource_fields = {
     'id': fields.Integer,
     'name' : fields.String,
-    'type' : fields.String(attribute=lambda x: x.operation_type.name)
+    'type' : fields.String(attribute=lambda x: 'null' if x is None \
+                           else x.operation_type.name)
 }
 
 class RuleList(Resource):
     @marshal_with(rule_resource_fields)
     def get(self):
         return db.get_rules()
+
+api.add_resource(RuleList, '/rules')
+
+class Rule(Resource):
+    @marshal_with(rule_resource_fields)
+    def get(self, id):
+        return db.get_rule_by_id(id)
+
+    def put(self, id):
+        return make_rule(request)
+
+api.add_resource(Rule, '/rules/<int:id>')
+
+def make_rule(request):
+    logging.info('Make rule')
+    data = request.json
+    if data:
+        name = 'Unnamed' if not data.has_key('name') else data['name']
+        result = db.create_rule(name)
+        if result > 0:
+            return 'CREATED', 201
+    else:
+        return BAD_REQUEST
     
 if __name__ == '__main__':
     from flask.ext.cors import CORS
