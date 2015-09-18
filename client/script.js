@@ -39,7 +39,7 @@ var serverPath = 'http://localhost:8080';
 
 var Group = Backbone.Model.extend({
   url: function() {
-    return "/group/" + this.id;
+    return "/groups/" + this.id;
   }
 });
 
@@ -58,16 +58,12 @@ var Operation = Backbone.Model.extend({
       img_width: "",
       img_height: ""
     },
-    url: function() {
-      return "/photo/" + this.id;
-    },
 
     initialize: function() {
       // this.os
       this.path = serverPath + '/static/thumbs/' + this.name;
 
     }
-    //urlRoot: "/photo"
   });
 
 var MainImage = Image.extend({
@@ -138,7 +134,7 @@ var ThumbView = Backbone.View.extend({
 
   var ImageCollection = Backbone.Collection.extend({
     model: Image,
-    url: "/photo",
+    url: "/photos",
 
     initialize: function() {
       this.on('add', this.addOne, this);
@@ -155,10 +151,6 @@ var ThumbView = Backbone.View.extend({
 
     fetchError: function (collection, response) {
         throw new Error("Collection fetch error");
-    },
-
-    parse: function(response) {
-      return response.photos;
     }
   });
 
@@ -176,9 +168,8 @@ var ThumbView = Backbone.View.extend({
 
     initialize: function() {
       console.log("ImageCollectionView.initialize");
-      // console.log(this.collection.length);
       this.collection.bind("reset", this.render);
-      //this.collection.fetch();
+      // this.collection.fetch();
     },
     
     render: function() {
