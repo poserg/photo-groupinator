@@ -38,14 +38,35 @@ var serverPath = 'http://localhost:8080';
   });
 
 var Group = Backbone.Model.extend({
-  url: function() {
-    return "/groups/" + this.id;
-  }
+    defaults: {
+        id: "",
+        name: "",
+        create_date: ""
+    }
+});
+
+var GroupView = Backbone.View.extend({
+    template: _.template($('#group-template').html()),
+    
+    render: function() {
+        this.$el.html(this.template(this.model.toJSON()));
+
+        return this;
+    }
+});
+
+var GroupCollection = Backbone.Collection.extend({
+   model: Group, 
+   url: "/groups"
+});
+
+var GroupCollectionView = Backbone.View.extend({
+   el: '#group'
 });
 
 var Operation = Backbone.Model.extend({
   url: function() {
-    return "/operation";
+    return "/operations";
   }
 });
 
@@ -225,6 +246,10 @@ imageCollection.fetch({
 });
 
 $('#main').append(mainImageView.render().el);
+
+var groupCollection = new GroupCollection;
+groupCollection.fetch({
+});
 
 var Router = Backbone.Router.extend({
   routes: {
