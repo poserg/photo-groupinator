@@ -5,4 +5,4 @@ Flask-Cors
 Flask-RESTful
 --allow-external PIL
 --allow-unverified PIL
-PIL
+Pillow
