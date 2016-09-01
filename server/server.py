@@ -5,7 +5,8 @@ from sys import path as sys_path
 sys_path.append('../')
 import os
 #from werkzeug.exceptions import BadRequest
-from flask import Flask, request, jsonify, abort, Response
+from flask import Flask, request, jsonify, abort, Response, \
+     send_from_directory
 from flask_restful import Resource, Api, fields, marshal_with
 from flask.ext.cors import cross_origin
 from dao.db import *
@@ -14,7 +15,7 @@ from functools import wraps
 import logging
 logging.basicConfig(format = u'%(filename)s[LINE:%(lineno)d]# %(levelname)-8s [%(asctime)s]  %(message)s', level = logging.DEBUG)
 
-app = Flask(__name__, static_folder = '../images/static')
+app = Flask(__name__, static_folder = '../images/static', static_url_path='/../client')
 app.secret_key = os.urandom(24)
 app.debug = True
 
@@ -77,7 +78,15 @@ def returns_json(f):
 @app.route('/')
 #@crossdomain(origin='*')
 def main():
-    return 'Photo Groupinator', 200
+    return app.send_static_file('index.html')
+
+@app.route('/js/<path:path>')
+def send_js(path):
+    return send_from_directory('../client', path)
+
+@app.route('/css/<path:path>')
+def send_css(path):
+    return send_from_directory('../client', path)
 
 photo_resource_fields = {
     'id': fields.Integer,

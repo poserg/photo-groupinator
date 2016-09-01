@@ -82,7 +82,7 @@ var Operation = Backbone.Model.extend({
 
     initialize: function() {
       // this.os
-      this.path = serverPath + '/static/thumbs/' + this.name;
+      this.path = '/static/thumbs/' + this.name;
 
     }
   });
@@ -90,8 +90,8 @@ var Operation = Backbone.Model.extend({
 var MainImage = Image.extend({
   initialize: function() {
     this.on('change:name', function() {
-      this.set('path', serverPath + '/static/main/' + this.get('name'));
-      this.set('blur', serverPath + '/static/blur/' + this.get('name'));
+      this.set('path', '/static/main/' + this.get('name'));
+      this.set('blur', '/static/blur/' + this.get('name'));
       this.set('img_width', (window.innerWidth - 200) + 'px');
       this.set('img_height', window.innerHeight + 'px');
     });
