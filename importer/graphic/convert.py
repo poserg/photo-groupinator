@@ -18,9 +18,31 @@ BLUR_IMAGE = ("static/blur")
 def resize_image(image_path, dist_path, t):
     """Generate main image
     convert -quality 90 -resize 1600x1067 IMG_1203.JPG my_out.jpg
-    
+
     Thumbs
-    convert -quality 90 -resize 168x112 IMG_1203.JPG my_out.jpg"""
+    convert -quality 90 -resize 168x112 IMG_1203.JPG my_out.jpg
+
+    :TODO
+    -thumbnail — опция похожая на -resize. Помимо реcайза, удаляет также и метаданные изображения. Говорят, что работает быстрее и качественнее, чем -resize.
+    Примеры использования параметра -thumbnail:
+
+    Ресайз по ширине 100px, с сохранением соотношения сторон (высота изменится пропорционально):
+
+    convert img.jpg -thumbnail 100x img1.jpg
+
+    Ресайз по высоте 150px, с сохранением соотношения сторон (ширина изменится пропорционально).
+
+    convert img.jpg -thumbnail x150 img1.jpg
+
+    Ресайз без сохранения соотношения сторон:
+
+    convert img.jpg -thumbnail 100x150! img1.jpg
+
+
+    Ресайз в % (процентах):
+
+    convert img.jpg -thumbnail 20% img1.jpg
+    """
 
 
     dist_path = get_dist_path(dist_path, t[0], image_path)
